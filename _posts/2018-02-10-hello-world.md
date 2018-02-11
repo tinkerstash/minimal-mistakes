@@ -1,17 +1,17 @@
 ---
 title: 'Hello world'
 categories: miscel
-excerpt: 'This is an excerpt =) Just writing something here for testing purposes.'
+excerpt: 'First post. Testing. Basic setup.'
 ---
 
-## Some testing
+### Some testing
 
 Hello world!
 
 Testing mathjax:
 $$e^{2\pi i kx}$$
 
-## How this is built
+### How this is built
 
 We fork the Minimal Mistakes repo and use it to generate static content into a Github Pages repo. We do **not** need Github Pages support for Jekyll.
 

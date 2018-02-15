@@ -12,7 +12,7 @@
   <h1>Guo Guo Chiu Hideout</h1>
   <h2 id="welcome">Welcome</h2>
   <!--Add buttons to initiate auth sequence and sign out-->
-  <button id="authorize-button" class="btn btn-primary" style="display: none;">Authorize</button>
+  <button id="authorize-button" class="btn btn-primary" style="display: none;">Sign In</button>
   <button id="signout-button" class="btn btn-primary" style="display: none;">Sign Out</button>
 
   <img class="rounded float-right" width="300px" src="planttrees.jpg" />
@@ -30,6 +30,7 @@
   <div class="game">
     <div class="card-body">
       <h5 class="card-title">Our plants</h5>
+      <div id="flowers_remark"></div>
       <div id="flowers"></div>
     </div>
   </div>
@@ -209,6 +210,7 @@
       var range = response.result;
       var x = parseInt(range.values[0][0]) + 1;
 
+      var name = googleUser.getBasicProfile().getName();
       var params = {
         spreadsheetId: SHEET,
         // includeValuesInResponse: true,
@@ -217,14 +219,14 @@
       };
       var valueBody = {
         values: [
-          [x],
+          [x, name],
         ],
       };
       var request = gapi.client.sheets.spreadsheets.values.update(params, valueBody);
       request.then(function(response) {
         console.log('Updated flowers');
         console.log(response.result);
-        renderFlowers(x);
+        renderFlowers(x, name);
       }, function(reason) {
         console.error(reason.result.error.message);
       });
@@ -234,9 +236,10 @@
     });
   }
 
-  function renderFlowers(x) {
+  function renderFlowers(x, name) {
     clearFlowers();
-    
+    document.getElementById('flowers_remark').innerHTML = 'Last nourished by: ' + name;
+
     // var x = range.values[0][0];
     var numFlowers = Math.floor(x / 7);
     var m = document.getElementById('flowers');
@@ -258,12 +261,14 @@
   function updateFlowers() {
     gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: SHEET,
-      range: 'flowers!A1',
+      range: 'flowers!A1:B1',
     }).then(function(response) {
       console.log('updateFlowers START');
+      console.log(response.result);
       var range = response.result;
       var x = range.values[0][0];
-      renderFlowers(x);
+      var name = range.values[0][1];
+      renderFlowers(x, name);
       console.log('updateFlowers DONE')
     }, function(response) {
       console.error(response.result.error.message);

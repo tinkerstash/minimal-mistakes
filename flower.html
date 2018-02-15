@@ -53,6 +53,7 @@
   var authorizeButton = document.getElementById('authorize-button');
   var signoutButton = document.getElementById('signout-button');
   var googleUser;
+  var updateMessagesInterval;
 
   /**
    *  On load, called to load the auth2 library and API client library.
@@ -136,6 +137,11 @@
       welcome.innerHTML = 'Welcome ' + name + '!';
       updateMessages();
       updateFlowers();
+
+      updateMessagesInterval = setInterval(function() {
+        updateMessages();
+        updateFlowers();
+      }, 5000);
     } else {
       authorizeButton.style.display = 'block';
       signoutButton.style.display = 'none';
@@ -143,6 +149,8 @@
       welcome.innerHTML = 'Welcome!';
       clearMessages();
       clearFlowers();
+
+      clearInterval(updateMessagesInterval);
     }
     console.log('updateSigninStatus DONE ' + isSignedIn);
   }

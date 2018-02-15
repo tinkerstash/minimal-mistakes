@@ -114,6 +114,7 @@
       console.log('Wrote message');
       console.log(response.result);
       updateMessages();
+      handleFlowerClick();  // Also increase number of flowers.
     }, function(reason) {
       console.error(reason.result.error.message);
     });
@@ -248,7 +249,7 @@
     
     var d = document.createElement('img');
     d.src = 'flower' + left + '.png';
-    d.onclick = handleFlowerClick;
+    // d.onclick = handleFlowerClick;
     m.appendChild(d);
 
     for (var i = 0; i < numFlowers; ++i) {
